@@ -1,48 +1,40 @@
 ﻿#include <iostream>
 #include <vector>
+#include <algorithm>
 
-class SumFunctor {
+class Functor {
 public:
-    SumFunctor(const std::vector<int>& vec) : _vec(vec) {}
+    Functor() : _count{ 0 }, _sum{ 0 } {}
 
-    int operator()() const // Функтор
+    void operator()(const int& elem)
     { 
-        int sum = 0;
-        for (const auto& elem : _vec)
-        {
-            sum += elem;
-        }
-        return sum; 
+        _sum += elem;
+        if (elem % 3 == 0)
+            ++_count;
     }
 
-private:
-    std::vector<int> _vec;
-};
-
-class CountFunctor {
-public:
-    CountFunctor(const std::vector<int>& vec) : _vec(vec) {}
-
-    int operator()() const // Функтор
-    {
-        int count = 0;
-        for (const auto& elem : _vec)
-        {
-            if (elem % 3 == 0)
-                ++count;
-        }
-        return count;
-    }
+    int get_sum() const { return _sum; }
+    int get_count() const { return _count; }
 
 private:
-    std::vector<int> _vec;
+    int _count;
+    int _sum;
 };
+
 
 int main()
 {
-    std::vector<int> vec{ 4, 1, 3, 6, 25, 54 };
-    SumFunctor get_sum(vec);
-    CountFunctor get_count(vec);
-    std::cout << "Sum:\t" << get_sum() << std::endl;
-    std::cout << "Count:\t" << get_count() << std::endl;
+    std::vector<int> vec = { 4, 1, 3, 6, 25, 54 };
+    Functor functor;
+    functor = std::for_each(vec.begin(), vec.end(), functor);
+
+    std::cout << "[IN]: ";
+    for (const auto& elem : vec)
+    {
+        std::cout << elem << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "[OUT]: get_sum() = " << functor.get_sum() << "\n";
+    std::cout << "[OUT]: get_count() = " << functor.get_count() << "\n";
 }

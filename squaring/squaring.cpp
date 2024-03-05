@@ -8,8 +8,8 @@ T& squaring(T& num)
     return num;
 }
 
-template<>
-std::vector<int>& squaring(std::vector<int>& vec)
+template<typename T>
+std::vector<T>& squaring(std::vector<T>& vec)
 {
     for (auto& el : vec)
     {
@@ -22,6 +22,7 @@ int main()
 {
     int a = 4;
     std::vector<int> vec{ -1, 4, 8 };
+    //std::vector<double> vec{ 1.1, 4.2, 8.9 };
 
     std::cout << "[IN]:\t" << a << std::endl;
     std::cout << "[OUT]:\t" <<  squaring(a) << std::endl;
